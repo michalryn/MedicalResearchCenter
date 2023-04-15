@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MedicalResearchCenter.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace MedicalResearchCenter.Data
@@ -9,6 +10,7 @@ namespace MedicalResearchCenter.Data
         {
         }
 
+        DbSet<Patient> Patients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
