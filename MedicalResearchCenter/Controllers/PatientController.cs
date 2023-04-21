@@ -50,7 +50,40 @@ namespace MedicalResearchCenter.Controllers
                 return StatusCode(result.StatusCode, result.Message);
             }
 
-            return Ok(result.Message);
+            ReadPatientDTO patientDTO = (ReadPatientDTO)result.Result;
+
+            return CreatedAtRoute("GetPatientAsync", new { patientId = patientDTO.Id }, patientDTO);
+        }
+
+        [HttpGet]
+        [Route("GetPatientAsync/{patientId}", Name = "GetPatientAsync")]
+        public async Task<IActionResult> GetPatientAsync(int patientId)
+        {
+            var result = await _patientService.GetPatientAsync(patientId);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            ReadPatientDTO patientDTO = (ReadPatientDTO)result.Result;
+
+            return Ok(patientDTO);
+        }
+
+
+        [HttpDelete]
+        [Route("DeletePatientAsync/{patientId}")]
+        public async Task<IActionResult> DeletePatientAsync(int patientId)
+        {
+            var result = await _patientService.DeletePatientAsync(patientId);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(204);
         }
 
         #endregion

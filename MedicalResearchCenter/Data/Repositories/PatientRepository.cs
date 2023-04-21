@@ -1,5 +1,7 @@
 ﻿using MedicalResearchCenter.Data.Entities;
 using MedicalResearchCenter.Data.IRepositories;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime.InteropServices;
 
 namespace MedicalResearchCenter.Data.Repositories
 {
@@ -16,6 +18,20 @@ namespace MedicalResearchCenter.Data.Repositories
                 .ReloadAsync();
 
             return patient;
+        }
+
+        public async Task<Patient> GetPatientAsync(int id)
+        {
+            var result = await DataContext.Patients
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            return result;
+        }
+
+        public async Task DeletePatientAsync(Patient patient)
+        {
+            Remove(patient);
+            await SaveChangesAsync();
         }
 
     }

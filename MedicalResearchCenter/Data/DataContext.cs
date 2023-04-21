@@ -6,12 +6,17 @@ namespace MedicalResearchCenter.Data
 {
     public class DataContext : DbContext
     {
+        #region Constructors
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+        #endregion
 
-        DbSet<Patient> Patients { get; set; }
+        #region Properties
+        public DbSet<Patient> Patients { get; set; }
+        #endregion
 
+        #region Methods
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -84,5 +89,6 @@ namespace MedicalResearchCenter.Data
             RemoveEntitiesRange(entity);
             await SaveChangesAsync();
         }
+        #endregion
     }
 }
