@@ -2,7 +2,7 @@
 
 namespace MedicalResearchCenter.ViewModels.Patient
 {
-    public class NewPatientViewModel
+    public class UpdatePatientViewModel
     {
         [Required]
         public string FirstName { get; set; }
@@ -25,12 +25,23 @@ namespace MedicalResearchCenter.ViewModels.Patient
         [Phone]
         public string PhoneNumber { get; set; }
 
+        [Required(AllowEmptyStrings = true)]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
         public string Region { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
         public string City { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
         public string PostalCode { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
         public string Street { get; set; }
+
+        [Required(AllowEmptyStrings = true)]
         public string UnitNumber { get; set; }
     }
 }

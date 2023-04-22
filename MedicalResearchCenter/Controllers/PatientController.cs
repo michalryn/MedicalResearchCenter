@@ -3,6 +3,7 @@ using MedicalResearchCenter.Services;
 using MedicalResearchCenter.ViewModels.Patient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace MedicalResearchCenter.Controllers
 {
@@ -40,7 +41,11 @@ namespace MedicalResearchCenter.Controllers
                 DateOfBirth = newPatient.DateOfBirth,
                 PhoneNumber = newPatient.PhoneNumber,
                 Email = newPatient.Email,
-                Address = newPatient.Address
+                Region = newPatient.Region,
+                City = newPatient.City,
+                PostalCode = newPatient.PostalCode,
+                Street = newPatient.Street,
+                UnitNumber = newPatient.UnitNumber
             };
 
             var result = await _patientService.AddPatientAsync(dto);
@@ -83,9 +88,39 @@ namespace MedicalResearchCenter.Controllers
                 return StatusCode(result.StatusCode, result.Message);
             }
 
-            return StatusCode(204);
+            return StatusCode(result.StatusCode);
         }
 
+        [HttpPut]
+        [Route("UpdatePatientAsync/{patientId}")]
+        public async Task<IActionResult> UpdatePatientAsync(int patientId, UpdatePatientViewModel updatedPatient)
+        {
+            UpdatePatientDTO dto = new UpdatePatientDTO()
+            {
+                Id = patientId,
+                FirstName = updatedPatient.FirstName,
+                LastName = updatedPatient.LastName,
+                Pesel = updatedPatient.Pesel,
+                Gender = updatedPatient.Gender,
+                DateOfBirth = updatedPatient.DateOfBirth,
+                PhoneNumber = updatedPatient.PhoneNumber,
+                Email = updatedPatient.Email,
+                Region = updatedPatient.Region,
+                City = updatedPatient.City,
+                PostalCode = updatedPatient.PostalCode,
+                Street = updatedPatient.Street,
+                UnitNumber = updatedPatient.UnitNumber
+            };
+
+            var result = await _patientService.UpdatePatientAsync(dto);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
         #endregion
 
     }

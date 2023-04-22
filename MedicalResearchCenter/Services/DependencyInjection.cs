@@ -9,6 +9,9 @@ namespace MedicalResearchCenter.Services
         {
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<PatientService>();
+            
+            services.AddScoped<IResearchProjectRepository, ResearchProjectRepository>();
+            services.AddScoped<ResearchProjectService>();
 
             return services;
         }

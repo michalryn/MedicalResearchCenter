@@ -16,7 +16,7 @@ namespace MedicalResearchCenter.Data.Entities
         public string LastName { get; set; }
         
         [Required]
-        [MaxLength(11)]
+        [StringLength(11)]
         public string Pesel { get; set; }
 
         [Required]
@@ -32,8 +32,14 @@ namespace MedicalResearchCenter.Data.Entities
 
         [EmailAddress]
         public string Email { get; set; }
-        
-        public string Address { get; set; }
+
+        public string Region { get; set; }
+        public string City { get; set; }
+        public string PostalCode { get; set; }
+        public string Street { get; set; }
+        public string UnitNumber { get; set; }
+
+        public virtual ICollection<ResearchProject>? ResearchProjects { get; set; }
 
     }
 }

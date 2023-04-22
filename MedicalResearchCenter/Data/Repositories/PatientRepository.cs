@@ -7,7 +7,13 @@ namespace MedicalResearchCenter.Data.Repositories
 {
     public class PatientRepository : BaseRepository<Patient>, IPatientRepository
     {
+        #region Constructors
+
         public PatientRepository(DataContext context) : base(context) { }
+
+        #endregion
+
+        #region Methods
 
         public async Task<Patient> AddPatientAsync(Patient patient)
         {
@@ -33,6 +39,13 @@ namespace MedicalResearchCenter.Data.Repositories
             Remove(patient);
             await SaveChangesAsync();
         }
+
+        public async Task UpdatePatientAsync(Patient patient)
+        {
+            await UpdateAndSaveChangesAsync(patient);
+        }
+
+        #endregion
 
     }
 }

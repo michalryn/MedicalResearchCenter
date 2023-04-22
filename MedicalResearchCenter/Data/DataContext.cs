@@ -14,6 +14,7 @@ namespace MedicalResearchCenter.Data
 
         #region Properties
         public DbSet<Patient> Patients { get; set; }
+        public DbSet<ResearchProject> ResearchProjects { get; set; }
         #endregion
 
         #region Methods

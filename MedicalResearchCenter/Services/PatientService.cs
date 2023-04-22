@@ -37,7 +37,11 @@ namespace MedicalResearchCenter.Services
                     DateOfBirth = dto.DateOfBirth,
                     PhoneNumber = dto.PhoneNumber,
                     Email = dto.Email,
-                    Address = dto.Address
+                    Region = dto.Region,
+                    City = dto.City,
+                    PostalCode = dto.PostalCode,
+                    Street = dto.Street,
+                    UnitNumber = dto.UnitNumber
                 };
 
                 patient = await _patientRepo.AddPatientAsync(patient);
@@ -52,7 +56,11 @@ namespace MedicalResearchCenter.Services
                     DateOfBirth = patient.DateOfBirth,
                     PhoneNumber = patient.PhoneNumber,
                     Email = patient.Email,
-                    Address = patient.Address
+                    Region = patient.Region,
+                    City = patient.City,
+                    PostalCode = patient.PostalCode,
+                    Street = patient.Street,
+                    UnitNumber = patient.UnitNumber
                 };
 
                 return CreateSuccessResponse(201, "Patient created successfully", newPatientDTO);
@@ -84,7 +92,11 @@ namespace MedicalResearchCenter.Services
                     DateOfBirth = patient.DateOfBirth,
                     PhoneNumber = patient.PhoneNumber,
                     Email = patient.Email,
-                    Address = patient.Address
+                    Region = patient.Region,
+                    City = patient.City,
+                    PostalCode = patient.PostalCode,
+                    Street = patient.Street,
+                    UnitNumber = patient.UnitNumber
                 };
 
                 return CreateSuccessResponse(200, "Patient retrived successfully", dto);
@@ -116,6 +128,38 @@ namespace MedicalResearchCenter.Services
             }
         }
 
+        public async Task<ServiceResponseDTO> UpdatePatientAsync(UpdatePatientDTO dto)
+        {
+            try
+            {
+                Patient oldPatient = await _patientRepo.GetPatientAsync(dto.Id);
+
+                if(oldPatient == null)
+                {
+                    return CreateFailureResponse(404, "Paitent with such id was not found");
+                }
+
+                oldPatient.FirstName = dto.FirstName;
+                oldPatient.LastName = dto.LastName;
+                oldPatient.Pesel = dto.Pesel;
+                oldPatient.Gender = dto.Gender;
+                oldPatient.DateOfBirth = dto.DateOfBirth;
+                oldPatient.PhoneNumber = dto.PhoneNumber;
+                oldPatient.Email = dto.Email;
+                oldPatient.Region = dto.Region;
+                oldPatient.City = dto.City;
+                oldPatient.Street = dto.Street;
+                oldPatient.UnitNumber = dto.UnitNumber;
+
+                await _patientRepo.UpdatePatientAsync(oldPatient);
+
+                return CreateSuccessResponse(204, "");
+            }
+            catch (Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while updating patient");
+            }
+        }
         #endregion
     }
 }
