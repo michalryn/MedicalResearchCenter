@@ -45,6 +45,14 @@ namespace MedicalResearchCenter.Data.Repositories
             await UpdateAndSaveChangesAsync(patient);
         }
 
+        public IQueryable<Patient> GetPatientsAsync()
+        {
+            var result = DataContext.Patients
+                .AsQueryable();
+
+            return result;
+        }
+
         #endregion
 
     }

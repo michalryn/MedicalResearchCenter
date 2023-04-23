@@ -8,5 +8,6 @@ namespace MedicalResearchCenter.Data.IRepositories
         Task<Patient> GetPatientAsync(int id);
         Task DeletePatientAsync(Patient patient);
         Task UpdatePatientAsync(Patient patient);
+        IQueryable<Patient> GetPatientsAsync();
     }
 }

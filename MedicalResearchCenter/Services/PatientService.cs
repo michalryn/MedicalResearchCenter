@@ -2,6 +2,8 @@
 using MedicalResearchCenter.Data.DTOs.Response;
 using MedicalResearchCenter.Data.Entities;
 using MedicalResearchCenter.Data.IRepositories;
+using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace MedicalResearchCenter.Services
 {
@@ -158,6 +160,48 @@ namespace MedicalResearchCenter.Services
             catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while updating patient");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> GetPatientsAsync(GetPatientsDTO dto)
+        {
+            try
+            {
+                IQueryable<Patient> patients = _patientRepo.GetPatientsAsync().Include(p => p.ResearchProjects);
+
+                if(dto.ProjectId != null && dto.Assigned == true)
+                {
+                    patients = patients.Where(p => p.ResearchProjects.Any(rp => rp.Id == dto.ProjectId));
+                }
+
+                if (dto.ProjectId != null && dto.Assigned == false)
+                {
+                    patients = patients.Where(p => p.ResearchProjects.All(rp => rp.Id != dto.ProjectId));
+                }
+
+                patients = patients.OrderBy(p => p.LastName);
+
+                GetPatientsResponseDTO response = new GetPatientsResponseDTO();
+                response.TotalCount = patients.Count();
+                response.PageNumber = dto.PageNumber;
+                response.PageSize = dto.PageSize;
+
+                response.Patients = await patients
+                    .Select(p => new ReadPatientToListDTO()
+                    {
+                        Id = p.Id,
+                        FirstName = p.FirstName,
+                        LastName = p.LastName,
+                        Pesel = p.Pesel,
+                        Gender = p.Gender,
+                        DateOfBirth = p.DateOfBirth
+                    }).ToPagedListAsync(dto.PageNumber, dto.PageSize);
+
+                return CreateSuccessResponse(200, "Patients retrieved successfully", response);
+            }
+            catch (Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while retrievieng patients");
             }
         }
         #endregion

@@ -121,6 +121,76 @@ namespace MedicalResearchCenter.Controllers
 
             return StatusCode(result.StatusCode);
         }
+
+        [HttpPost]
+        [Route("GetPatientsAsync")]
+        public async Task<IActionResult> GetPatientsAsync(GetPatientsViewModel paging)
+        {
+            GetPatientsDTO dto = new GetPatientsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize
+            };
+
+            var result = await _patientService.GetPatientsAsync(dto);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetPatientsResponseDTO patients = (GetPatientsResponseDTO)result.Result;
+
+            return Ok(patients);
+        }
+
+        [HttpPost]
+        [Route("GetAssignedPatients/{projectId}")]
+        public async Task<IActionResult> GetAssignedPatientsAsync(int projectId, GetPatientsViewModel paging)
+        {
+            GetPatientsDTO dto = new GetPatientsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize,
+                ProjectId = projectId,
+                Assigned = true
+            };
+
+            var result = await _patientService.GetPatientsAsync(dto);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetPatientsResponseDTO patients = (GetPatientsResponseDTO)result.Result;
+
+            return Ok(patients);
+        }
+
+        [HttpPost]
+        [Route("GetNotAssignedPatients/{projectId}")]
+        public async Task<IActionResult> GetNotAssignedPatientsAsync(int projectId, GetPatientsViewModel paging)
+        {
+            GetPatientsDTO dto = new GetPatientsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize,
+                ProjectId = projectId,
+                Assigned = false
+            };
+
+            var result = await _patientService.GetPatientsAsync(dto);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetPatientsResponseDTO patients = (GetPatientsResponseDTO)result.Result;
+
+            return Ok(patients);
+        }
         #endregion
 
     }

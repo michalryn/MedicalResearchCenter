@@ -1,5 +1,7 @@
-﻿using MedicalResearchCenter.Data.DTOs.ResearchProject;
+﻿using MedicalResearchCenter.Data.DTOs.Patient;
+using MedicalResearchCenter.Data.DTOs.ResearchProject;
 using MedicalResearchCenter.Services;
+using MedicalResearchCenter.ViewModels.Patient;
 using MedicalResearchCenter.ViewModels.ResearchProject;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -156,6 +158,19 @@ namespace MedicalResearchCenter.Controllers
 
             return StatusCode(result.StatusCode);
         }
+
+        /*[HttpPost]
+        [Route("GetAssignedPatientsAsync/{projectId}")]
+        public async Task<IActionResult> GetAssignedPatientsAsync(int projectId, GetPatientsViewModel paging)
+        {
+            GetPatientsDTO dto = new GetPatientsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize,
+                ProjectId = projectId
+            };
+
+        }*/
         #endregion
     }
 }
