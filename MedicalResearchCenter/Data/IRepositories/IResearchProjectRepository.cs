@@ -6,7 +6,9 @@ namespace MedicalResearchCenter.Data.IRepositories
     {
         Task<ResearchProject> AddResearchProjectAsync(ResearchProject project);
         Task<ResearchProject> GetResearchProjectAsync(int id);
+        Task<ResearchProject> GetResearchProjectWithPatientsAsync(int id);
         Task DeleteResearchProjectAsync(ResearchProject project);
         Task UpdateResearchProjectAsync(ResearchProject project);
+        IQueryable<ResearchProject> GetResearchProjects();
     }
 }

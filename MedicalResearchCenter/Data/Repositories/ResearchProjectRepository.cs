@@ -34,6 +34,15 @@ namespace MedicalResearchCenter.Data.Repositories
             return result;
         }
 
+        public async Task<ResearchProject> GetResearchProjectWithPatientsAsync(int id)
+        {
+            var result = await DataContext.ResearchProjects
+                .Include(p => p.Patients)
+                .SingleOrDefaultAsync(p => p.Id == id);
+
+            return result;
+        }
+
         public async Task DeleteResearchProjectAsync(ResearchProject project)
         {
             Remove(project);
@@ -43,6 +52,14 @@ namespace MedicalResearchCenter.Data.Repositories
         public async Task UpdateResearchProjectAsync(ResearchProject project)
         {
             await UpdateAndSaveChangesAsync(project);
+        }
+
+        public IQueryable<ResearchProject> GetResearchProjects()
+        {
+            var result = DataContext.ResearchProjects
+                .AsQueryable();
+
+            return result;
         }
         #endregion
     }

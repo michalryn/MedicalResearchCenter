@@ -67,6 +67,28 @@ namespace MedicalResearchCenter.Controllers
             return Ok(projectDTO);
         }
 
+        [HttpPost]
+        [Route("GetResearchProjectsAsync")]
+        public async Task<IActionResult> GetResearchProjectsAsync(GetRPsViewModel paging)
+        {
+            GetRPsDTO dto = new GetRPsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize
+            };
+
+            var result = await _researchProjectService.GetResearchProjectsAsync(dto);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetRPsResponseDTO projects = (GetRPsResponseDTO)result.Result;
+
+            return Ok(projects);
+        }
+
         [HttpDelete]
         [Route("DeleteResearchProjectAsync/{projectId}")]
         public async Task<IActionResult> DeleteResearchProjectAsync(int projectId)
@@ -104,6 +126,35 @@ namespace MedicalResearchCenter.Controllers
 
             return StatusCode(result.StatusCode);
 
+        }
+
+        [HttpPost]
+        [Route("AssignPatientAsync/{projectId}")]
+        public async Task<IActionResult> AssignPatientAsync(int projectId, int patientId)
+        {
+            var result = await _researchProjectService.AssignPatientAsync(projectId, patientId);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
+
+        
+        [HttpPost]
+        [Route("RemovePatientAsync/{projectId}")]
+        public async Task<IActionResult> RemovePatientAsync(int projectId, int patientId)
+        {
+            var result = await _researchProjectService.RemovePatientAsync(projectId, patientId);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
         }
         #endregion
     }
