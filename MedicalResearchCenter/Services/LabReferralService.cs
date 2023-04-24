@@ -1,7 +1,9 @@
 ﻿using MedicalResearchCenter.Data.DTOs.LabReferral;
+using MedicalResearchCenter.Data.DTOs.PatientTest;
 using MedicalResearchCenter.Data.DTOs.Response;
 using MedicalResearchCenter.Data.Entities;
 using MedicalResearchCenter.Data.IRepositories;
+using X.PagedList;
 
 namespace MedicalResearchCenter.Services
 {
@@ -32,7 +34,7 @@ namespace MedicalResearchCenter.Services
             {
                 bool isPatientAssigned = await _researchProjectRepo.IsPatientAssignedAsync(dto.ResearchProjectId, dto.PatientId);
 
-                if(!isPatientAssigned)
+                if (!isPatientAssigned)
                 {
                     return CreateFailureResponse(409, "Patient is not assigned to this research project");
                 }
@@ -62,13 +64,122 @@ namespace MedicalResearchCenter.Services
             }
         }
 
-        public async Task<ServiceResponseDTO> ConfirmPatientConsentAsync(int labReferralId)
+        public async Task<ServiceResponseDTO> GetLabReferralAsync(int labReferralId)
+        {
+            try
+            {
+                LabReferral labReferral = await _labReferralRepo.GetLabReferralAsync(labReferralId);
+
+                if (labReferral == null)
+                {
+                    return CreateFailureResponse(404, "Referral with such id was not found");
+                }
+
+                ReadLabReferralDTO dto = new ReadLabReferralDTO()
+                {
+                    LabReferralId = labReferralId,
+                    PatientId = labReferral.PatientId,
+                    ResearchProjectId = labReferral.ResearchProjectId,
+                    ScheduledDate = labReferral.ScheduledDate,
+                    Consent = labReferral.Consent,
+                    FirstName = labReferral.Patient.FirstName,
+                    LastName = labReferral.Patient.LastName,
+                    Pesel = labReferral.Patient.Pesel,
+                    DateOfBirth = labReferral.Patient.DateOfBirth,
+                    Gender = labReferral.Patient.Gender
+                };
+
+                dto.PatientTests = labReferral.PatientTests.Select(t => new ReadPatientTestDTO()
+                {
+                    LabReferralId = labReferralId,
+                    LabTestId = t.LabTestId,
+                    Result = t.Result,
+                    Name = t.LabTest.Name,
+                    Unit = t.LabTest.Unit,
+                    NormFrom = t.LabTest.NormFrom,
+                    NormTo = t.LabTest.NormTo
+                });
+
+                return CreateSuccessResponse(200, "Lab referral retrieved successfully", dto);
+            }
+            catch (Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while retrieving the lab referral");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> GetLabReferralsAsync(GetLabReferralsDTO dto)
+        {
+            try
+            {
+                IQueryable<LabReferral> labReferrals = _labReferralRepo.GetLabReferrals();
+
+                if (dto.PatientId != null)
+                {
+                    labReferrals = labReferrals.Where(r => r.PatientId == dto.PatientId);
+                }
+
+                if (dto.ResearchProjectId != null)
+                {
+                    labReferrals = labReferrals.Where(r => r.ResearchProjectId == dto.ResearchProjectId);
+                }
+
+                GetLabReferralsResponseDTO response = new GetLabReferralsResponseDTO();
+
+                response.TotalCount = labReferrals.Count();
+                response.PageNumber = dto.PageNumber;
+                response.PageSize = dto.PageSize;
+
+                response.LabReferrals = await labReferrals.Select(r => new ReadLabReferralDTO()
+                {
+                    LabReferralId = r.Id,
+                    PatientId = r.PatientId,
+                    ResearchProjectId = r.ResearchProjectId,
+                    ScheduledDate = r.ScheduledDate,
+                    Consent = r.Consent,
+                    FirstName = r.Patient.FirstName,
+                    LastName = r.Patient.LastName,
+                    Pesel = r.Patient.Pesel,
+                    DateOfBirth = r.Patient.DateOfBirth,
+                    Gender = r.Patient.Gender
+                }).ToPagedListAsync(dto.PageNumber, dto.PageSize);
+
+                return CreateSuccessResponse(200, "Lab referrals retrieved successfully", response);
+            }
+            catch(Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while retrieving lab referrals");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> DeleteLabReferralAsync(int labReferralId)
         {
             try
             {
                 LabReferral labReferral = await _labReferralRepo.GetLabReferralAsync(labReferralId);
 
                 if(labReferral == null)
+                {
+                    return CreateFailureResponse(404, "Lab refferal with such id was not found");
+                }
+
+                await _labReferralRepo.DeleteLabReferralAsync(labReferral);
+
+                return CreateSuccessResponse(204, "");
+            }
+            catch(Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while deleting lab referral");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> ConfirmPatientConsentAsync(int labReferralId)
+        {
+            try
+            {
+                LabReferral labReferral = await _labReferralRepo.GetLabReferralAsync(labReferralId);
+
+                if (labReferral == null)
                 {
                     return CreateFailureResponse(404, "Lab referral with such id was not found");
                 }

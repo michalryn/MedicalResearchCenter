@@ -4,6 +4,7 @@ using MedicalResearchCenter.Data.Entities;
 using MedicalResearchCenter.Data.IRepositories;
 using MedicalResearchCenter.ViewModels.LabTest;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace MedicalResearchCenter.Services
 {
@@ -34,7 +35,7 @@ namespace MedicalResearchCenter.Services
             {
                 bool exists = await _labTestRepo.ExistsAsync(dto.Name);
 
-                if(exists)
+                if (exists)
                 {
                     return CreateFailureResponse(409, "Lab test with such name already exists");
                 }
@@ -60,7 +61,7 @@ namespace MedicalResearchCenter.Services
 
                 return CreateSuccessResponse(201, "Lab test created successfully", newLabTest);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while creating the lab test");
             }
@@ -72,7 +73,7 @@ namespace MedicalResearchCenter.Services
             {
                 LabTest labTest = await _labTestRepo.GetLabTestAsync(labTestId);
 
-                if(labTest == null)
+                if (labTest == null)
                 {
                     return CreateFailureResponse(404, "Lab test with such id was not found");
                 }
@@ -88,9 +89,40 @@ namespace MedicalResearchCenter.Services
 
                 return CreateSuccessResponse(200, "Lab test retrieved successfully", dto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while retrieving the lab test");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> GetLabTestsAsync(GetLabTestsDTO dto)
+        {
+            try
+            {
+                IQueryable<LabTest> labTests = _labTestRepo.GetLabTests();
+
+                labTests = labTests.OrderBy(t => t.Name);
+
+                GetLabTestsResponseDTO response = new GetLabTestsResponseDTO();
+                response.TotalCount = labTests.Count();
+                response.PageNumber = dto.PageNumber;
+                response.PageSize = dto.PageSize;
+
+                response.LabTests = await labTests
+                    .Select(t => new ReadLabTestDTO()
+                    {
+                        Id = t.Id,
+                        Name = t.Name,
+                        Unit = t.Unit,
+                        NormFrom = t.NormFrom,
+                        NormTo = t.NormTo
+                    }).ToPagedListAsync(dto.PageNumber, dto.PageSize);
+
+                return CreateSuccessResponse(200, "Lab tests retrieved successfully", response);
+            }
+            catch(Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while retrieving lab tests");
             }
         }
 
@@ -100,7 +132,7 @@ namespace MedicalResearchCenter.Services
             {
                 LabTest labTest = await _labTestRepo.GetLabTestAsync(dto.Id);
 
-                if(labTest == null)
+                if (labTest == null)
                 {
                     return CreateFailureResponse(404, "Lab test with such id was not found");
                 }
@@ -126,14 +158,14 @@ namespace MedicalResearchCenter.Services
             {
                 LabTest labTest = await _labTestRepo.GetLabTestAsync(labTestId);
 
-                if(labTest == null)
+                if (labTest == null)
                 {
                     return CreateFailureResponse(404, "Lab test with such id was not found");
                 }
 
                 bool isUsed = await _patientTestRepo.IsLabTestUsedAsync(labTest.Id);
 
-                if(isUsed)
+                if (isUsed)
                 {
                     return CreateFailureResponse(409, "Lab test is used in patient tests, DELETE operation is forbidden");
                 }
@@ -142,7 +174,7 @@ namespace MedicalResearchCenter.Services
 
                 return CreateSuccessResponse(204, "");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while deleting the lab test");
             }

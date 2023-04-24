@@ -6,6 +6,8 @@ namespace MedicalResearchCenter.Data.IRepositories
     {
         Task AddLabReferralAsync(LabReferral labReferral);
         Task<LabReferral> GetLabReferralAsync(int id);
+        IQueryable<LabReferral> GetLabReferrals();
+        Task DeleteLabReferralAsync(LabReferral labReferral);
         Task UpdateLabReferralAsync(LabReferral labReferral);
     }
 }

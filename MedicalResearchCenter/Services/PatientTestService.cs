@@ -36,7 +36,6 @@ namespace MedicalResearchCenter.Services
                 }
 
                 Dictionary<int, AddTestResultDTO> testsDictionary = testResults.Results.ToDictionary(r => r.LabTestId);
-                //patientTests.OrderBy(t => t.LabTestId);
 
                 foreach(PatientTest patientTest in patientTests)
                 {
@@ -50,6 +49,27 @@ namespace MedicalResearchCenter.Services
             catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while adding patient test results");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> DeleteTestResultAsync(int labReferralId, int labTestId)
+        {
+            try
+            {
+                PatientTest test = await _patientTestRepo.GetPatientTestAsync(labReferralId, labTestId);
+
+                if(test == null)
+                {
+                    return CreateFailureResponse(404, "Patient test with such id was not found");
+                }
+
+                await _patientTestRepo.DeletePatientTestAsync(test);
+
+                return CreateSuccessResponse(204, "");
+            }
+            catch(Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while deleting patient test");
             }
         }
 

@@ -67,6 +67,27 @@ namespace MedicalResearchCenter.Controllers
             return Ok(labTest);
         }
 
+        [HttpPost]
+        [Route("GetLabTestsAsync")]
+        public async Task<IActionResult> GetLabTestsAsync(GetLabTestsViewModel paging)
+        {
+            GetLabTestsDTO dto = new GetLabTestsDTO()
+            {
+                PageSize = paging.PageSize,
+                PageNumber = paging.PageNumber
+            };
+
+            var result = await _labTestService.GetLabTestsAsync(dto);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetLabTestsResponseDTO labTests = (GetLabTestsResponseDTO)result.Result;
+
+            return Ok(labTests);
+        }
 
         [HttpPut]
         [Route("UpdateLabTestAsync/{labTestId}")]

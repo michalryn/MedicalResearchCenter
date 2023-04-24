@@ -32,6 +32,14 @@ namespace MedicalResearchCenter.Data.Repositories
             return result;
         }
 
+        public IQueryable<LabTest> GetLabTests()
+        {
+            var result = DataContext.LabTests
+                .AsQueryable();
+
+            return result;
+        }
+
         public async Task UpdateLabTestAsync(LabTest labTest)
         {
             await UpdateAndSaveChangesAsync(labTest);

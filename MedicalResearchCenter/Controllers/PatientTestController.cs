@@ -28,8 +28,8 @@ namespace MedicalResearchCenter.Controllers
         #region Methods
 
         [HttpPost]
-        [Route("AddTestResults/{labReferralId}")]
-        public async Task<IActionResult> AddTestResultsAsync(int labReferralId, AddTestResultsViewModel testResults)
+        [Route("UpdateTestResults/{labReferralId}")]
+        public async Task<IActionResult> UpdateTestResultsAsync(int labReferralId, AddTestResultsViewModel testResults)
         {
             AddTestResultsDTO dto = new AddTestResultsDTO()
             {
@@ -38,6 +38,20 @@ namespace MedicalResearchCenter.Controllers
             };
 
             var result = await _patientTestService.AddTestResultsAsync(dto);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
+
+        [HttpDelete]
+        [Route("DeleteTestResultAsync")]
+        public async Task<IActionResult> DeleteTestResultAsync(int labReferralId, int labTestId)
+        {
+            var result = await _patientTestService.DeleteTestResultAsync(labReferralId, labTestId);
 
             if (!result.IsSuccess)
             {

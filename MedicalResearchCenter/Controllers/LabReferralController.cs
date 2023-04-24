@@ -64,10 +64,59 @@ namespace MedicalResearchCenter.Controllers
             return StatusCode(result.StatusCode);
         }
 
-        /*[HttpPost]
-        [Route("GetLabReferrals")]
-        */
+        [HttpGet]
+        [Route("GetLabReferral/{labReferralId}")]
+        public async Task<IActionResult> GetLabReferralAsync(int labReferralId)
+        {
+            var result = await _labReferralService.GetLabReferralAsync(labReferralId);
 
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            ReadLabReferralDTO labReferral = (ReadLabReferralDTO)result.Result;
+
+            return Ok(labReferral);
+        }
+
+        [HttpPost]
+        [Route("GetLabReferralsAsync")]
+        public async Task<IActionResult> GetLabReferralsAsync(GetLabReferralsViewModel paging)
+        {
+            GetLabReferralsDTO dto = new GetLabReferralsDTO()
+            {
+                PageNumber = paging.PageNumber,
+                PageSize = paging.PageSize,
+                PatientId = paging.PatientId,
+                ResearchProjectId = paging.ResearchProjectId
+            };
+
+            var result = await _labReferralService.GetLabReferralsAsync(dto);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            GetLabReferralsResponseDTO labReferrals = (GetLabReferralsResponseDTO)result.Result;
+
+            return Ok(labReferrals);
+        }
+
+        [HttpDelete]
+        [Route("DeleteLabReferralAsync/{labReferralId}")]
+        public async Task<IActionResult> DeleteLabReferralAsync(int labReferralId)
+        {
+            var result = await _labReferralService.DeleteLabReferralAsync(labReferralId);
+
+            if (!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
         #endregion
 
     }

@@ -23,9 +23,26 @@ namespace MedicalResearchCenter.Data.Repositories
         public async Task<LabReferral> GetLabReferralAsync(int id)
         {
             var result = await DataContext.LabReferrals
+                .Include(r => r.Patient)
+                .Include("PatientTests.LabTest")
                 .SingleOrDefaultAsync(l =>  l.Id == id);
 
             return result;
+        }
+
+        public IQueryable<LabReferral> GetLabReferrals()
+        {
+            var result = DataContext.LabReferrals
+                .Include(r => r.Patient)
+                .AsQueryable();
+
+            return result;
+        }
+
+        public async Task DeleteLabReferralAsync(LabReferral labReferral)
+        {
+            Remove(labReferral);
+            await SaveChangesAsync();
         }
 
         public async Task UpdateLabReferralAsync(LabReferral labReferral)

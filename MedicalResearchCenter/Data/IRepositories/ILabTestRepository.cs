@@ -6,6 +6,7 @@ namespace MedicalResearchCenter.Data.IRepositories
     {
         Task<LabTest> AddLabTestAsync(LabTest labTest);
         Task<LabTest> GetLabTestAsync(int id);
+        IQueryable<LabTest> GetLabTests();
         Task UpdateLabTestAsync(LabTest labTest);
         Task<bool> ExistsAsync(string name);
         Task DeleteLabTestAsync(LabTest labTest);
