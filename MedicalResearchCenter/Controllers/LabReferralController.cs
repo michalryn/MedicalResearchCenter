@@ -64,6 +64,10 @@ namespace MedicalResearchCenter.Controllers
             return StatusCode(result.StatusCode);
         }
 
+        /*[HttpPost]
+        [Route("GetLabReferrals")]
+        */
+
         #endregion
 
     }

@@ -22,6 +22,21 @@ namespace MedicalResearchCenter.Data.Repositories
             return result;
         }
 
+        public async Task<List<PatientTest>> GetPatientTestsAsync(int referralId)
+        {
+            var result = await DataContext.PatientTests
+                .Include(t => t.LabTest)
+                .Where(t => t.LabReferralId == referralId)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task UpdatePatientTestsAsync(IEnumerable<PatientTest> patientTests)
+        {
+            await UpdateRangeAndSaveChangesAsync(patientTests);
+        }
+        
         #endregion
 
     }

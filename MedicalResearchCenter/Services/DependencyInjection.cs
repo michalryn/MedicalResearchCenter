@@ -20,6 +20,7 @@ namespace MedicalResearchCenter.Services
             services.AddScoped<LabReferralService>();
 
             services.AddScoped<IPatientTestRepository, PatientTestRepository>();
+            services.AddScoped<PatientTestService>();
 
             return services;
         }
