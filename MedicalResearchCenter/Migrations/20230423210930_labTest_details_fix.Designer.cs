@@ -4,6 +4,7 @@ using MedicalResearchCenter.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MedicalResearchCenter.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230423210930_labTest_details_fix")]
+    partial class labTest_details_fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace MedicalResearchCenter.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferral", b =>
+            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabRefferal", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,12 +51,12 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasIndex("ResearchProjectId");
 
-                    b.ToTable("LabReferrals");
+                    b.ToTable("LabRefferals");
                 });
 
-            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferralLabTest", b =>
+            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabRefferalLabTest", b =>
                 {
-                    b.Property<int>("LabReferralId")
+                    b.Property<int>("LabRefferalId")
                         .HasColumnType("int");
 
                     b.Property<int>("LabTestId")
@@ -62,11 +65,11 @@ namespace MedicalResearchCenter.Migrations
                     b.Property<double>("Result")
                         .HasColumnType("float");
 
-                    b.HasKey("LabReferralId", "LabTestId");
+                    b.HasKey("LabRefferalId", "LabTestId");
 
                     b.HasIndex("LabTestId");
 
-                    b.ToTable("LabReferralLabTests");
+                    b.ToTable("LabRefferalLabTests");
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabTest", b =>
@@ -206,7 +209,7 @@ namespace MedicalResearchCenter.Migrations
                     b.ToTable("PatientResearchProject");
                 });
 
-            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferral", b =>
+            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabRefferal", b =>
                 {
                     b.HasOne("MedicalResearchCenter.Data.Entities.Patient", "Patient")
                         .WithMany()
@@ -225,11 +228,11 @@ namespace MedicalResearchCenter.Migrations
                     b.Navigation("ReserachProject");
                 });
 
-            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferralLabTest", b =>
+            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabRefferalLabTest", b =>
                 {
-                    b.HasOne("MedicalResearchCenter.Data.Entities.LabReferral", "LabReferral")
+                    b.HasOne("MedicalResearchCenter.Data.Entities.LabRefferal", "LabRefferal")
                         .WithMany("LabTests")
-                        .HasForeignKey("LabReferralId")
+                        .HasForeignKey("LabRefferalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -239,7 +242,7 @@ namespace MedicalResearchCenter.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("LabReferral");
+                    b.Navigation("LabRefferal");
 
                     b.Navigation("LabTest");
                 });
@@ -259,7 +262,7 @@ namespace MedicalResearchCenter.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferral", b =>
+            modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabRefferal", b =>
                 {
                     b.Navigation("LabTests");
                 });

@@ -15,12 +15,22 @@ namespace MedicalResearchCenter.Data
         #region Properties
         public DbSet<Patient> Patients { get; set; }
         public DbSet<ResearchProject> ResearchProjects { get; set; }
+        public DbSet<LabReferral> LabReferrals { get; set; }
+        public DbSet<LabTest> LabTests { get; set; }
+        public DbSet<LabReferralLabTest> LabReferralLabTests { get; set; }
+
         #endregion
 
         #region Methods
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<LabReferralLabTest>().HasKey(l => new
+            {
+                l.LabReferralId,
+                l.LabTestId
+            });
         }
 
         public void AttachEntity<TEntity>(TEntity entity) where TEntity : class, new()

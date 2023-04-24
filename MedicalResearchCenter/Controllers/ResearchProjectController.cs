@@ -159,18 +159,6 @@ namespace MedicalResearchCenter.Controllers
             return StatusCode(result.StatusCode);
         }
 
-        /*[HttpPost]
-        [Route("GetAssignedPatientsAsync/{projectId}")]
-        public async Task<IActionResult> GetAssignedPatientsAsync(int projectId, GetPatientsViewModel paging)
-        {
-            GetPatientsDTO dto = new GetPatientsDTO()
-            {
-                PageNumber = paging.PageNumber,
-                PageSize = paging.PageSize,
-                ProjectId = projectId
-            };
-
-        }*/
         #endregion
     }
 }

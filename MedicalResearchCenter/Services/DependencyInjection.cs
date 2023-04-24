@@ -13,6 +13,12 @@ namespace MedicalResearchCenter.Services
             services.AddScoped<IResearchProjectRepository, ResearchProjectRepository>();
             services.AddScoped<ResearchProjectService>();
 
+            services.AddScoped<ILabTestRepository, LabTestRepository>();
+            services.AddScoped<LabTestService>();
+
+            services.AddScoped<ILabReferralRepository, LabReferralRepository>();
+            services.AddScoped<LabReferralService>();
+
             return services;
         }
     }
