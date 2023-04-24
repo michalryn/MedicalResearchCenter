@@ -17,7 +17,7 @@ namespace MedicalResearchCenter.Data
         public DbSet<ResearchProject> ResearchProjects { get; set; }
         public DbSet<LabReferral> LabReferrals { get; set; }
         public DbSet<LabTest> LabTests { get; set; }
-        public DbSet<LabReferralLabTest> LabReferralLabTests { get; set; }
+        public DbSet<PatientTest> PatientTests { get; set; }
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace MedicalResearchCenter.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<LabReferralLabTest>().HasKey(l => new
+            modelBuilder.Entity<PatientTest>().HasKey(l => new
             {
                 l.LabReferralId,
                 l.LabTestId

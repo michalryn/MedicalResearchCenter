@@ -10,5 +10,6 @@ namespace MedicalResearchCenter.Data.IRepositories
         Task DeleteResearchProjectAsync(ResearchProject project);
         Task UpdateResearchProjectAsync(ResearchProject project);
         IQueryable<ResearchProject> GetResearchProjects();
+        Task<bool> IsPatientAssignedAsync(int projectId, int patientId);
     }
 }

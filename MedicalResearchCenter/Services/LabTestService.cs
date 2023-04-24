@@ -12,14 +12,16 @@ namespace MedicalResearchCenter.Services
         #region Properties
 
         private readonly ILabTestRepository _labTestRepo;
+        private readonly IPatientTestRepository _patientTestRepo;
 
         #endregion
 
         #region Constructors
 
-        public LabTestService(ILabTestRepository labTestRepo)
+        public LabTestService(ILabTestRepository labTestRepo, IPatientTestRepository patientTestRepo)
         {
             _labTestRepo = labTestRepo;
+            _patientTestRepo = patientTestRepo;
         }
 
         #endregion
@@ -115,6 +117,34 @@ namespace MedicalResearchCenter.Services
             catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while retrieving the lab test");
+            }
+        }
+
+        public async Task<ServiceResponseDTO> DeleteLabTestAsync(int labTestId)
+        {
+            try
+            {
+                LabTest labTest = await _labTestRepo.GetLabTestAsync(labTestId);
+
+                if(labTest == null)
+                {
+                    return CreateFailureResponse(404, "Lab test with such id was not found");
+                }
+
+                bool isUsed = await _patientTestRepo.IsLabTestUsedAsync(labTest.Id);
+
+                if(isUsed)
+                {
+                    return CreateFailureResponse(409, "Lab test is used in patient tests, DELETE operation is forbidden");
+                }
+
+                await _labTestRepo.DeleteLabTestAsync(labTest);
+
+                return CreateSuccessResponse(204, "");
+            }
+            catch(Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while deleting the lab test");
             }
         }
 

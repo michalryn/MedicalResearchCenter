@@ -8,5 +8,6 @@ namespace MedicalResearchCenter.Data.IRepositories
         Task<LabTest> GetLabTestAsync(int id);
         Task UpdateLabTestAsync(LabTest labTest);
         Task<bool> ExistsAsync(string name);
+        Task DeleteLabTestAsync(LabTest labTest);
     }
 }

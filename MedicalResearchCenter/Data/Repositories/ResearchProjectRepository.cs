@@ -61,6 +61,16 @@ namespace MedicalResearchCenter.Data.Repositories
 
             return result;
         }
+
+        public async Task<bool> IsPatientAssignedAsync(int projectId, int patientId)
+        {
+            var result = await DataContext.ResearchProjects
+                .Include(r => r.Patients)
+                .Where(r => r.Id == projectId && r.Patients.Any(p => p.Id == patientId))
+                .AnyAsync();
+
+            return result;
+        }
         #endregion
     }
 }

@@ -27,7 +27,7 @@ namespace MedicalResearchCenter.Data.Entities
         [ForeignKey("PatientId")]
         public virtual Patient Patient { get; set; }
 
-        public virtual ICollection<LabReferralLabTest> LabTests { get; set; }
+        public virtual ICollection<PatientTest> PatientTests { get; set; }
 
     }
 }

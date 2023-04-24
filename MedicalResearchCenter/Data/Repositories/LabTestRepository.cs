@@ -45,6 +45,12 @@ namespace MedicalResearchCenter.Data.Repositories
             return result;
         }
 
+        public async Task DeleteLabTestAsync(LabTest labTest)
+        {
+            Remove(labTest);
+            await SaveChangesAsync();
+        }
+
         #endregion
     }
 }

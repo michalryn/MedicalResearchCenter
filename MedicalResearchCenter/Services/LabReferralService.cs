@@ -10,14 +10,16 @@ namespace MedicalResearchCenter.Services
         #region Properties
 
         private readonly ILabReferralRepository _labReferralRepo;
+        private readonly IResearchProjectRepository _researchProjectRepo;
 
         #endregion
 
         #region Constructors
 
-        public LabReferralService(ILabReferralRepository labReferralRepo)
+        public LabReferralService(ILabReferralRepository labReferralRepo, IResearchProjectRepository researchProjectRepo)
         {
             _labReferralRepo = labReferralRepo;
+            _researchProjectRepo = researchProjectRepo;
         }
 
         #endregion
@@ -28,7 +30,14 @@ namespace MedicalResearchCenter.Services
         {
             try
             {
-                ICollection<LabReferralLabTest> labTests = dto.LabTests.Select(l => new LabReferralLabTest()
+                bool isPatientAssigned = await _researchProjectRepo.IsPatientAssignedAsync(dto.ResearchProjectId, dto.PatientId);
+
+                if(!isPatientAssigned)
+                {
+                    return CreateFailureResponse(409, "Patient is not assigned to this research project");
+                }
+
+                ICollection<PatientTest> labTests = dto.LabTests.Select(l => new PatientTest()
                 {
                     LabTestId = l,
                     LabReferralId = dto.ResearchProjectId
@@ -40,7 +49,7 @@ namespace MedicalResearchCenter.Services
                     Consent = dto.Consent,
                     ResearchProjectId = dto.ResearchProjectId,
                     PatientId = dto.PatientId,
-                    LabTests = labTests
+                    PatientTests = labTests
                 };
 
                 await _labReferralRepo.AddLabReferralAsync(labReferral);
@@ -53,6 +62,28 @@ namespace MedicalResearchCenter.Services
             }
         }
 
+        public async Task<ServiceResponseDTO> ConfirmPatientConsentAsync(int labReferralId)
+        {
+            try
+            {
+                LabReferral labReferral = await _labReferralRepo.GetLabReferralAsync(labReferralId);
+
+                if(labReferral == null)
+                {
+                    return CreateFailureResponse(404, "Lab referral with such id was not found");
+                }
+
+                labReferral.Consent = true;
+
+                await _labReferralRepo.UpdateLabReferralAsync(labReferral);
+
+                return CreateSuccessResponse(204, "");
+            }
+            catch (Exception ex)
+            {
+                return CreateFailureResponse(500, "Error while modifying the consent");
+            }
+        }
         #endregion
 
     }

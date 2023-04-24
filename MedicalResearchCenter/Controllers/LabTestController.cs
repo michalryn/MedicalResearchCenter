@@ -91,6 +91,20 @@ namespace MedicalResearchCenter.Controllers
             return StatusCode(result.StatusCode);
         }
 
+        [HttpDelete]
+        [Route("DeleteLabTestAsync/{labTestId}")]
+        public async Task<IActionResult> DeleteLabTestAsync(int labTestId)
+        {
+            var result = await _labTestService.DeleteLabTestAsync(labTestId);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
+
         #endregion
 
     }

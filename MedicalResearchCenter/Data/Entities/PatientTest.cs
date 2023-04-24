@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MedicalResearchCenter.Data.Entities
 {
-    [Table("LabReferralLabTests")]
-    public class LabReferralLabTest
+    [Table("PatientTests")]
+    public class PatientTest
     {
         [Key]
         public int LabReferralId { get; set; }

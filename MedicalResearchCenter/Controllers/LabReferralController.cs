@@ -50,6 +50,20 @@ namespace MedicalResearchCenter.Controllers
             return StatusCode(result.StatusCode, result.Message);
         }
 
+        [HttpPut]
+        [Route("ConfirmPatientConsentAsync/{labReferralId}")]
+        public async Task<IActionResult> ConfirmPatientConsentAsync(int labReferralId)
+        {
+            var result = await _labReferralService.ConfirmPatientConsentAsync(labReferralId);
+
+            if(!result.IsSuccess)
+            {
+                return StatusCode(result.StatusCode, result.Message);
+            }
+
+            return StatusCode(result.StatusCode);
+        }
+
         #endregion
 
     }

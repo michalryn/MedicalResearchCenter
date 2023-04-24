@@ -19,6 +19,8 @@ namespace MedicalResearchCenter.Services
             services.AddScoped<ILabReferralRepository, LabReferralRepository>();
             services.AddScoped<LabReferralService>();
 
+            services.AddScoped<IPatientTestRepository, PatientTestRepository>();
+
             return services;
         }
     }
