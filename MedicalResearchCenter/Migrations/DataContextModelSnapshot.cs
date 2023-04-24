@@ -48,7 +48,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasIndex("ResearchProjectId");
 
-                    b.ToTable("LabReferrals");
+                    b.ToTable("LabReferrals", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabTest", b =>
@@ -77,7 +77,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LabTests");
+                    b.ToTable("LabTests", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.Patient", b =>
@@ -138,7 +138,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patients");
+                    b.ToTable("Patients", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.PatientTest", b =>
@@ -156,7 +156,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasIndex("LabTestId");
 
-                    b.ToTable("PatientTests");
+                    b.ToTable("PatientTests", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.ResearchProject", b =>
@@ -188,7 +188,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ResearchProjects");
+                    b.ToTable("ResearchProjects", (string)null);
                 });
 
             modelBuilder.Entity("PatientResearchProject", b =>
@@ -203,7 +203,7 @@ namespace MedicalResearchCenter.Migrations
 
                     b.HasIndex("ResearchProjectsId");
 
-                    b.ToTable("PatientResearchProject");
+                    b.ToTable("PatientResearchProject", (string)null);
                 });
 
             modelBuilder.Entity("MedicalResearchCenter.Data.Entities.LabReferral", b =>

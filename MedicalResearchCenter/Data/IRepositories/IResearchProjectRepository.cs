@@ -11,5 +11,6 @@ namespace MedicalResearchCenter.Data.IRepositories
         Task UpdateResearchProjectAsync(ResearchProject project);
         IQueryable<ResearchProject> GetResearchProjects();
         Task<bool> IsPatientAssignedAsync(int projectId, int patientId);
+        Task<bool> ExistsAsync(int projectId);
     }
 }

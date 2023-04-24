@@ -32,6 +32,13 @@ namespace MedicalResearchCenter.Services
         {
             try
             {
+                bool projectExists = await _researchProjectRepo.ExistsAsync(dto.ResearchProjectId);
+
+                if (!projectExists)
+                {
+                    return CreateFailureResponse(404, "Research project with such id was not found");
+                }
+
                 bool isPatientAssigned = await _researchProjectRepo.IsPatientAssignedAsync(dto.ResearchProjectId, dto.PatientId);
 
                 if (!isPatientAssigned)
@@ -146,7 +153,7 @@ namespace MedicalResearchCenter.Services
 
                 return CreateSuccessResponse(200, "Lab referrals retrieved successfully", response);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while retrieving lab referrals");
             }
@@ -158,7 +165,7 @@ namespace MedicalResearchCenter.Services
             {
                 LabReferral labReferral = await _labReferralRepo.GetLabReferralAsync(labReferralId);
 
-                if(labReferral == null)
+                if (labReferral == null)
                 {
                     return CreateFailureResponse(404, "Lab refferal with such id was not found");
                 }
@@ -167,7 +174,7 @@ namespace MedicalResearchCenter.Services
 
                 return CreateSuccessResponse(204, "");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return CreateFailureResponse(500, "Error while deleting lab referral");
             }

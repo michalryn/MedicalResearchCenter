@@ -10,7 +10,7 @@ namespace MedicalResearchCenter.Data.Entities
         public int Id { get; set; }
 
         [Required]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime ScheduledDate { get; set; }
 
         public bool Consent { get; set; }

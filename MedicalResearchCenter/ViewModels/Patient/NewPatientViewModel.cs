@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MedicalResearchCenter.Common.CustomDataAttributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace MedicalResearchCenter.ViewModels.Patient
 {
@@ -15,6 +16,7 @@ namespace MedicalResearchCenter.ViewModels.Patient
         public string Pesel { get; set; }
 
         [Required]
+        [GenderValidation]
         public string Gender { get; set; }
 
         [Required]

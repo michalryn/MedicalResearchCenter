@@ -71,6 +71,14 @@ namespace MedicalResearchCenter.Data.Repositories
 
             return result;
         }
+
+        public async Task<bool> ExistsAsync(int projectId)
+        {
+            var result = await DataContext.ResearchProjects
+                .AnyAsync(p => p.Id == projectId);
+
+            return result;
+        }
         #endregion
     }
 }

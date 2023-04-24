@@ -5,7 +5,7 @@ namespace MedicalResearchCenter.ViewModels.LabReferral
     public class NewLabReferralViewModel
     {
         [Required]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         public DateTime ScheduledDate { get; set; }
 
         [Required]
