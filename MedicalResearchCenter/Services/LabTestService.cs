@@ -130,6 +130,13 @@ namespace MedicalResearchCenter.Services
         {
             try
             {
+                bool exists = await _labTestRepo.ExistsAsync(dto.Name);
+
+                if(exists)
+                {
+                    return CreateFailureResponse(409, "Lab test with such name already exists");
+                }
+
                 LabTest labTest = await _labTestRepo.GetLabTestAsync(dto.Id);
 
                 if (labTest == null)
