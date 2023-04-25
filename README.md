@@ -45,7 +45,7 @@ To run the project you need to install the .NET 6 SDK and MSSQL Server.
 2. Create a database and put its "ConnectionString" inside the `appsettings.json`, migrations are applied to the database when you run the project
 3. To run the project use Visual Studio
 4. The application should be available at `https://localhost:7043` and `http://localhost:5014`
-5. Project comes with swagger available at `/swagger/index.html` endpoint
+5. Project comes with swagger installed, available at `/swagger/index.html` endpoint
 
 ### Linux:
 1. Install tools:
@@ -53,7 +53,7 @@ To run the project you need to install the .NET 6 SDK and MSSQL Server.
 - [MSSQL installation guide](https://learn.microsoft.com/en-us/sql/linux/sql-server-linux-overview?view=sql-server-ver16)
 2. Create a database and put its "ConnectionString" inside the `appsettings.json`, migrations are applied to the database when you run the project
 3. To run the project use the .NET CLI it should come with the .NET SDK installed in the first step.
-- Navigate to the projects repository and use `dotnet build` to build the project ([documentetnion](https://learn.microsoft.com/pl-pl/dotnet/core/tools/dotnet-build))
+- Navigate to the projects directory and use `dotnet build` to build the project ([documentetnion](https://learn.microsoft.com/pl-pl/dotnet/core/tools/dotnet-build))
 - Then run the project using `dotnet run` ([documentation](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-run))
 4. The application should be available at `https://localhost:7043` and `http://localhost:5014`
-5. Project comes with swagger available at `/swagger/index.html` endpoint
+5. Project comes with swagger installed, available at `/swagger/index.html` endpoint
